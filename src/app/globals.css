@@ -500,6 +500,87 @@ textarea {
   margin-left: auto;
 }
 
+.input-shell {
+  min-height: 46px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 0 13px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.66);
+}
+
+.input-shell svg {
+  width: 15px;
+  height: 15px;
+  flex: 0 0 auto;
+  color: #77727b;
+}
+
+.input-shell input,
+.plain-input,
+.plain-textarea,
+.mapping-row select {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.66);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 700;
+  outline: none;
+}
+
+.input-shell input {
+  min-height: 42px;
+  border: 0;
+  background: transparent;
+}
+
+.plain-input {
+  min-height: 46px;
+  padding: 0 13px;
+}
+
+.plain-textarea {
+  min-height: 96px;
+  resize: vertical;
+  padding: 13px;
+  line-height: 1.45;
+}
+
+.file-input {
+  padding: 12px 13px;
+}
+
+.guest-editor {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.42);
+}
+
+.icon-action {
+  width: fit-content;
+  border: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  background: transparent;
+  color: var(--primary);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.danger-action {
+  color: var(--danger);
+}
+
 .dashboard-hero {
   display: grid;
   justify-items: center;
@@ -753,6 +834,10 @@ textarea {
   font-weight: 800;
 }
 
+.btn:disabled {
+  opacity: 0.52;
+}
+
 .btn-primary {
   border: 1px solid rgba(255, 255, 255, 0.72);
   background: linear-gradient(145deg, var(--primary-light), var(--primary-dark));
@@ -938,6 +1023,43 @@ textarea {
   color: var(--primary);
   font-size: 9px;
   font-weight: 800;
+}
+
+.mapping-row {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 10px;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.mapping-row span {
+  overflow: hidden;
+  color: var(--text);
+  font-size: 11px;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.login-phone {
+  height: auto;
+  min-height: min(100svh - 40px, 680px);
+}
+
+.login-content {
+  display: grid;
+  align-content: center;
+  padding-bottom: 18px;
+}
+
+.error-note {
+  margin: 0;
+  color: var(--danger);
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.4;
 }
 
 .email-box {

@@ -10,9 +10,15 @@ import { AppShell } from "@/components/app/AppShell";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
-import { requests } from "@/lib/mock-data";
+import { getRequests, getResidentProfile } from "@/lib/data";
+import { formatDate, formatTime } from "@/lib/format";
 
-export default function HistoryPage() {
+export default async function HistoryPage() {
+  const [requests, resident] = await Promise.all([getRequests(), getResidentProfile()]);
+  const sentCount = requests.filter((request) => request.status === "sent").length;
+  const draftCount = requests.filter((request) => request.status === "draft").length;
+  const failedCount = requests.filter((request) => request.status === "failed").length;
+
   return (
     <AppShell title="Sent History" active="history">
       <div className="stack">
@@ -23,13 +29,14 @@ export default function HistoryPage() {
         </div>
 
         <div className="filter-row" aria-label="History filters">
-          <Badge tone="primary">All (8)</Badge>
-          <Badge>Sent (6)</Badge>
-          <Badge>Drafts (1)</Badge>
-          <Badge>Failed (1)</Badge>
+          <Badge tone="primary">All ({requests.length})</Badge>
+          <Badge>Sent ({sentCount})</Badge>
+          <Badge>Drafts ({draftCount})</Badge>
+          <Badge>Failed ({failedCount})</Badge>
         </div>
 
         <div className="stack">
+          {!requests.length ? <Card>No guest requests have been created yet.</Card> : null}
           {requests.map((request) => (
             <Card className="history-card" padded={false} key={request.id}>
               <div className="history-top">
@@ -39,8 +46,7 @@ export default function HistoryPage() {
                   </span>
                   <div>
                     <h2 className="history-name">
-                      {request.guest}
-                      {request.relation ? ` (${request.relation})` : ""}
+                      {request.guests.map((guest) => guest.name).join(", ")}
                     </h2>
                   </div>
                 </div>
@@ -48,24 +54,26 @@ export default function HistoryPage() {
                   tone={request.status === "sent" ? "success" : "danger"}
                   icon={request.status === "sent" ? "check" : "alert"}
                 >
-                  {request.status === "sent" ? "Sent" : "Failed"}
+                  {request.status.charAt(0).toUpperCase() + request.status.slice(1)}
                 </Badge>
               </div>
 
               <div className="history-meta">
                 <span>
                   <CalendarDays size={12} />
-                  {request.date}
+                  {formatDate(request.visitDate)}
                 </span>
                 <span>
                   <Clock3 size={12} />
-                  {request.time}
+                  {formatTime(request.startTime)} - {formatTime(request.endTime)}
                 </span>
               </div>
-              <p className="hint">{request.sentAt}</p>
+              <p className="hint">
+                {request.latestEmail?.errorMessage ?? `Updated ${new Date(request.updatedAt).toLocaleString()}`}
+              </p>
               <div className="history-foot">
-                <Badge>{request.unit}</Badge>
-                <a className="link-primary" href="/preview">
+                <Badge>Unit {resident.unit}</Badge>
+                <a className="link-primary" href={`/preview?requestId=${request.id}`}>
                   View Details <ChevronRight size={11} />
                 </a>
               </div>

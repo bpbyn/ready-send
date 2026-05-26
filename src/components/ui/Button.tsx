@@ -5,9 +5,20 @@ type ButtonProps = {
   href?: string;
   tone?: "primary" | "soft" | "tint";
   icon?: React.ReactNode;
+  type?: "button" | "submit";
+  disabled?: boolean;
+  formAction?: (formData: FormData) => void | Promise<void>;
 };
 
-export function Button({ children, href, tone = "primary", icon }: ButtonProps) {
+export function Button({
+  children,
+  href,
+  tone = "primary",
+  icon,
+  type = "button",
+  disabled = false,
+  formAction,
+}: ButtonProps) {
   const className = `btn btn-${tone}`;
   const content = (
     <>
@@ -24,5 +35,9 @@ export function Button({ children, href, tone = "primary", icon }: ButtonProps) 
     );
   }
 
-  return <button className={className}>{content}</button>;
+  return (
+    <button className={className} disabled={disabled} formAction={formAction} type={type}>
+      {content}
+    </button>
+  );
 }

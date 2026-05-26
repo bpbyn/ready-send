@@ -8,7 +8,7 @@ import {
   Settings,
 } from "lucide-react";
 import readySendLogo from "../../../logo.jpeg";
-import { resident } from "@/lib/mock-data";
+import { getResidentProfile } from "@/lib/data";
 
 type ActiveRoute = "dashboard" | "request" | "history" | "settings";
 
@@ -27,13 +27,14 @@ type AppShellProps = {
   contentClassName?: string;
 };
 
-export function AppShell({
+export async function AppShell({
   title,
   active,
   children,
   headerLink,
   contentClassName = "",
 }: AppShellProps) {
+  const resident = await getResidentProfile();
   const showBrandTagline = !headerLink && title === "Ready Send";
 
   return (
